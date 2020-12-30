@@ -1,0 +1,18 @@
+INSERT INTO FLOOR(ID, Foot_Traffic, Name) VALUES (0,238.21,'P1');
+INSERT INTO FLOOR(ID, Foot_Traffic, Name) VALUES (1,892.67,'GF');
+INSERT INTO FLOOR(ID, Foot_Traffic, Name) VALUES (2,381.34,'F1');
+INSERT INTO FLOOR(ID, Foot_Traffic, Name) VALUES (3,345.91,'F2');
+INSERT INTO FLOOR(ID, Foot_Traffic, Name) VALUES (4,405.102,'F3');
+
+
+INSERT INTO Business(ID, Phone_Number, Location, Name, Clflag, Suflag, Bflag, Eflag, Seflag, Rflag, Fflag, Coflag) VALUES(0, 8945124587, '7th Circle', 'Carefour', 1, 1, 0, 1, 0, 0, 1, 0);
+INSERT INTO Business(ID, Phone_Number, Location, Name, Clflag, Suflag, Bflag, Eflag, Seflag, Rflag, Fflag, Coflag) VALUES(1, 1654890845, 'Downtown', 'Starbucks', 0, 0, 0, 0, 0, 1, 0, 1)
+INSERT INTO Business(ID, Phone_Number, Location, Name, Clflag, Suflag, Bflag, Eflag, Seflag, Rflag, Fflag, Coflag) VALUES(2, 5530354189, 'Dahiyat Al Rasheed', 'Zara', 1, 0, 0, 0, 0, 0, 0, 0)
+INSERT INTO Business(ID, Phone_Number, Location, Name, Clflag, Suflag, Bflag, Eflag, Seflag, Rflag, Fflag, Coflag) VALUES(3, 1317139872, 'Uptown', 'Al Arab Bank', 0, 0, 1, 0, 0, 0, 0, 0)
+INSERT INTO Business(ID, Phone_Number, Location, Name, Clflag, Suflag, Bflag, Eflag, Seflag, Rflag, Fflag, Coflag) VALUES(4, 2315612291, 'Abdoun', 'DNA', 0, 0, 0, 1, 1, 0, 0, 0);
+
+
+
+INSERT INTO STORE(ID, Location, Contract_Start, Contract_End, Name, Space, Rented, Visibility, Sales, Rental_Fee, Floor_ID, Business_ID) VALUES(0, 'P1-0', '22-SEP-18', '22-SEP-21', '', 568, 1, 0.87, 1800, 0, 0, 3) 
+INSERT INTO STORE(ID, Location, Contract_Start, Contract_End, Name, Space, Rented, Visibility, Sales, Rental_Fee, Floor_ID, Business_ID) VALUES(1,'GF-22','02-APR-18','02-APR-23','', 500, 1, 0.49, 0, 0, 1, 1)
+INSERT INTO STORE(ID, Location, Contract_Start, Contract_End, Name, Space, Rented, Visibility, Sales, Rental_Fee, Floor_ID, Business_ID) VALUES(2, 'GF-2', '', '', '', 750, 0, 0.56, 0, 0, 1, 2) 
