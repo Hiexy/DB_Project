@@ -43,14 +43,14 @@ def setup():
         """alter table store add column  business_id int ;""",
         """alter table store add constraint fk_1 foreign key (Business_id) references business (id);""",
 
-        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Ground Floor', ' 2013-02-03 ' , '2020-12-30 ','starbucks',306,false,0.6475,322,306.90,2,2);""",
-        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Ground Floor', '2013-01-01', '2024-01-01','Midas',250,true, 0.5,500,25555.355 ,2,7);""",
-        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Third Floor', '2012-04-02' , '2024-04-02','macdonald',450,true,0.4451,74,13354.58,5,8);""",
-        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Parking Floor', '2010-04-01 ',' 2024-04-01 ','Arab Bank',908,true,0.1185,299,49295.61 ,1,6);""",
-        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Third Floor', '2014-09-01' , '2019-01-01','Zara',578,false,0.2023,127,13379.99 ,5,4);""",
-        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Ground Floor', '2013-08-15' , '2024-08-15 ','grand cinema',847,true,0.9062,258,178424.97,2,5);""",
-        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Ground Floor', Null , Null,Null,316,false,0.4882,Null,Null,2,Null);""",
-        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Ground Floor', '2006-08-15 ' , '2030-08-15','carrefour',146,true,0.4957,695,20566.41,2,1);"""
+        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Zone 4', ' 2013-02-03 ' , '2020-12-30 ','starbucks',306,false,0.6475,322,306.90,2,2);""",
+        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Zone 1', '2013-01-01', '2024-01-01','Midas',250,true, 0.5,500,25555.355 ,2,7);""",
+        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Zone 2', '2012-04-02' , '2024-04-02','macdonald',450,true,0.4451,74,13354.58,5,8);""",
+        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Zone 3', '2010-04-01 ',' 2024-04-01 ','Arab Bank',908,true,0.1185,299,49295.61 ,1,6);""",
+        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Zone 1', '2014-09-01' , '2019-01-01','Zara',578,false,0.2023,127,13379.99 ,5,4);""",
+        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Zone 2', '2013-08-15' , '2024-08-15 ','grand cinema',847,true,0.9062,258,178424.97,2,5);""",
+        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Zone 3', Null , Null,Null,316,false,0.4882,Null,Null,2,Null);""",
+        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Zone 1', '2006-08-15 ' , '2030-08-15','carrefour',146,true,0.4957,695,20566.41,2,1);"""
         ) # SQL to create tables and populate them with a data set
     
     for i in commands:
