@@ -1,6 +1,7 @@
 import psycopg2
 from psycopg2 import sql
 import pandas
+from datetime import datetime
 
 lis = ('business','store','floor')
 business_types = ("clothing", "supermarket", "banking", "entertainment", "services", "restaurants", "furniture", "coffeshops")
@@ -40,16 +41,16 @@ def setup():
 
         """alter table store add column  floor_id int """,
         """alter table store add constraint fk foreign key (Floor_id) references floor (id);""",
-        """alter table store add column  business_id int ;""",
+        """alter table store add column  business_id int unique;""",
         """alter table store add constraint fk_1 foreign key (Business_id) references business (id);""",
 
-        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Zone 4', ' 2013-02-03 ' , '2020-12-30 ','starbucks',306,false,0.6475,322,306.90,2,2);""",
+        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Zone 4', ' 2013-02-03 ' , '2020-12-30 ','starbucks',306,false,0.6475,322,26378.7815,2,Null);""",
         """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Zone 1', '2013-01-01', '2024-01-01','Midas',250,true, 0.5,500,25555.355 ,2,7);""",
         """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Zone 2', '2012-04-02' , '2024-04-02','macdonald',450,true,0.4451,74,13354.58,5,8);""",
         """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Zone 3', '2010-04-01 ',' 2024-04-01 ','Arab Bank',908,true,0.1185,299,49295.61 ,1,6);""",
-        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Zone 1', '2014-09-01' , '2019-01-01','Zara',578,false,0.2023,127,13379.99 ,5,4);""",
+        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Zone 1', '2014-09-01' , '2019-01-01','Zara',578,false,0.2023,127,13379.99 ,5,Null);""",
         """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Zone 2', '2013-08-15' , '2024-08-15 ','grand cinema',847,true,0.9062,258,178424.97,2,5);""",
-        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Zone 3', Null , Null,Null,316,false,0.4882,Null,Null,2,Null);""",
+        """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Zone 3', Null , Null,Null,316,false,0.4882,Null,25000,2,Null);""",
         """INSERT INTO store (location, contract_start,contract_end ,name,space,rented,visibility, sales,rental_fee,Floor_id,Business_id) VALUES('Zone 1', '2006-08-15 ' , '2030-08-15','carrefour',146,true,0.4957,695,20566.41,2,1);"""
         ) # SQL to create tables and populate them with a data set
     
@@ -152,7 +153,7 @@ def insert(t_option):
             cur.execute(query, val)
             conn.commit()
         except Exception as err:
-            print("Insert query not executed. ERROR: {err}")
+            print(f"Insert query not executed. ERROR: {err}")
 
     if t_option == 3:
         ft = input('\t\t\tEnter Foot Traffic: ')
@@ -267,9 +268,12 @@ def update(tb_option):
         upval = check_type(upval)
 
     
-    query = sql.SQL('UPDATE {} SET {} = %s WHERE ID = %s').format(sql.Identifier(lis[tb_option-1]), sql.Identifier(att))
+    query = sql.SQL('UPDATE {} SET {} = %s WHERE ID = %s;').format(sql.Identifier(lis[tb_option-1]), sql.Identifier(att))
+
     try:
         cur.execute(query, (upval, id, ))
+        conn.commit()
+
         if att == 'space' or att == 'visibility' or att == 'sales':
             upfee(id)
         elif att == 'foot_traffic':
@@ -277,11 +281,11 @@ def update(tb_option):
             cur.execute(query, (id,))
             ls = cur.fetchall()
             for i in ls:
-                upfee(i[0])
+                upfee(i)
     except:
         print('Update query did not work')
     
-    conn.commit()
+    
     conn.close() # Close the connection to the DBMS
 
 def custom_sql():
@@ -381,7 +385,102 @@ def get(tb_option):
     for i in tb:
         print('\t\t\t', i,sep='')
 
+
     conn.close() # Close the connection to the DBMS
+
+def rent():
+    conn = psycopg2.connect(
+    host="localhost",
+    database="city_mall",
+    user="postgres",
+    password="postgres")  # Connect to the DBMS (PostgreSQL)
+
+    get(1)
+    try:
+        bid = int(input('\tEnter ID of business: '))
+    except:
+        print('Wrong format of store id')
+
+
+    cur = conn.cursor()  # Create cursor to execute SQL
+    print('\tUnoccupied Stores:')
+    query = 'SELECT * FROM STORE WHERE RENTED=FALSE ORDER BY RENTAL_FEE'
+    cur.execute(query)
+
+    d = dict()
+
+    ls = cur.fetchall()
+    d["ID"] = []
+    d["Location"] = []
+    d["Contract Start"] = []
+    d["Contract End"] = []
+    d["Name"] = []
+    d["Space"] = []
+    d["Rented"] = []
+    d["Visibility"] = []
+    d["Sales"] = []
+    d["Rental Fee"] = []
+    d["Floor ID"] = []
+    d["Business ID"] = []
+    for i in ls:
+        d["ID"].append(i[0])
+        d["Location"].append(i[1])
+        d["Contract Start"].append(i[2])
+        d["Contract End"].append(i[3])
+        d["Name"].append(i[4])
+        d["Space"].append(i[5])
+        d["Rented"].append(i[6])
+        d["Visibility"].append(i[7])
+        d["Sales"].append(i[8])
+        d["Rental Fee"].append(i[9])
+        d["Floor ID"].append(i[10])
+        d["Business ID"].append(i[11])
+    
+
+    table = pandas.DataFrame(d).fillna("NULL")
+
+    table = table.to_string(index=False)
+    tb = table.split('\n')
+    for i in tb:
+        print('\t\t\t', i,sep='')
+
+    try:
+        sid = int(input('\tEnter ID of store to rent: '))
+    except:
+        print('Wrong format of store id')
+        return
+    
+    now = datetime.now()
+
+    try:
+        year = int(now.strftime('%Y'))
+        month = int(now.strftime('%m'))
+        day = int(now.strftime('%d'))
+
+        con_y = int(input('\tEnter how long you would like the contract to be (1-10): '))
+    
+        if 10 < con_y < 1:
+            print('\t Years not applicable')
+            return
+    except:
+        print('Wrong input')
+        return
+
+    con_start = f'{year}-{month}-{day}'
+    con_end = f'{year+con_y}-{month}-{day}'
+    rented = True
+    
+    try:
+        name = input('\tEnter name of store: ')
+    except:
+        print('Wrong format of name')
+        return
+    
+    query='UPDATE STORE SET CONTRACT_START=%s, CONTRACT_END=%s, NAME=%s, RENTED=%s, BUSINESS_ID=%s WHERE ID=%s;'
+    cur.execute(query, (con_start, con_end, name, rented, bid, sid, ))
+    conn.commit()
+    conn.close() # Close the connection to the DBMS
+
 
 if __name__ == "__main__":
     setup()  # Call setup
@@ -394,21 +493,28 @@ if __name__ == "__main__":
             q_option = int(input("""
             Please choose one of the following options:
             Enter 1 to get contents of a table
-            Enter 2 to insert a row into a table
-            Enter 3 to delete a row from a table
-            Enter 4 to update information in a specific table
-            Enter 5 to enter a custom sql query
-            Enter 6 to exit the interface
+            Enter 2 to rent an unoccupied store
+            Enter 3 to a new business
+            Enter 4 to delete a business
+            Enter 5 to update information in a bussiness, table or a floor
+            Enter 6 to enter a custom sql query
+            Enter 7 to exit the interface
             """))  # Input query
         except:
             print("Wrong format of input, try again.")
 
-        if q_option == 6:
+        if q_option == 7:
             exit()
-        elif q_option == 5:
+        elif q_option == 6:
             custom_sql()
+        elif q_option == 2:
+            rent()
+        elif q_option == 3:
+            insert(1)
+        elif q_option == 4:
+            delete(1)
 
-        else:
+        else:    
             try:
                 tb_option = int(input("""
                 Please choose one of the following options:
@@ -419,17 +525,13 @@ if __name__ == "__main__":
             except:
                 print("Wrong format of input, try again.")
 
-            if  3 < tb_option < 1:
-                print("Incorrect table number try again.")
-                continue
-
             if q_option == 1:
                 get(tb_option)
-            elif q_option == 2:
-                insert(tb_option)
             elif q_option == 3:
-                delete(tb_option)
+                insert(tb_option)
             elif q_option == 4:
+                delete(tb_option)
+            elif q_option == 5:
                 update(tb_option)
             else:
                 print("Incorrect option, Try again")
