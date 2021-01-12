@@ -205,6 +205,8 @@ def delete(tb_option):
         get(tb_option)
         print('\t\t\tPick business to delete')
         id = int(input('\t\t\tPick ID of business: '))
+        query = 'UPDATE STORE SET BUSINESS_ID = NULL WHERE BUSINESS_ID=%s'
+        cur.execute(query, (id,))
         try:
             cur.execute('DELETE FROM BUSINESS WHERE ID = %s;',(id,))
         except:
